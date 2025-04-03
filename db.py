@@ -1,6 +1,7 @@
 import pandas as pd
 import chromadb
 from chromadb.config import Settings
+from pprint import pprint
 
 
 df = pd.read_csv("emails/mann_meeting_related_2001_21.csv")
@@ -19,3 +20,10 @@ collection.add(
 )
 
 print("Collection count:", collection.count())
+
+results = collection.query(
+    query_texts=["this is about a meeting"], 
+    n_results=3 
+)
+
+pprint(results)

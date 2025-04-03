@@ -9,7 +9,8 @@ documents = df["content"].astype(str).tolist()
 ids = [f"email_{i}" for i in range(len(df))]
 
 
-client = chromadb.Client(Settings(persist_directory="./chroma_store"))
+client = chromadb.PersistentClient(path="./chroma_store")
+
 collection = client.get_or_create_collection(name="emails")
 metadatas = df[["From", "To", "Subject", "Date"]].astype(str).to_dict(orient="records")
 

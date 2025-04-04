@@ -25,7 +25,7 @@ llm = connect_model(
 )
 
 client = Client(api_key=os.environ["LANGSMITH_API_KEY"])
-conversation_prompt = client.pull_prompt("email-prompt:cff6be63")
+conversation_prompt = client.pull_prompt("kay-mann")
 
 
 class State(TypedDict):

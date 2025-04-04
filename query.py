@@ -8,6 +8,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_openai import ChatOpenAI
 from langgraph.graph import START, StateGraph
 from typing_extensions import List, TypedDict
+from langgraph.checkpoint.memory import MemorySaver
 
 from utils import connect_model
 
@@ -52,7 +53,10 @@ def generate(state: State):
 
 graph_builder = StateGraph(State).add_sequence([retrieve, generate])
 graph_builder.add_edge(START, "retrieve")
-graph = graph_builder.compile()
+memory = MemorySaver()
+graph = graph_builder.compile(checkpointer=memory)
+
+config = {"configurable": {"thread_id": "test_thread"}}
 
 if __name__ == "__main__":
     while True:
@@ -60,7 +64,7 @@ if __name__ == "__main__":
         if query.lower() in ["quit", "exit", "q"]:
             break
 
-        result = graph.invoke({"question": query})
+        result = graph.invoke({"question": query}, config=config)
         print("\nAnswer:", result["answer"])
 
         print("\nSources:")

@@ -22,7 +22,7 @@ def collection_exists_with_docs():
         collections = client.list_collections()
 
         for collection in collections:
-            if collection.name == collection_name:
+            if collection == collection_name:
                 # Check if collection has documents
                 chroma_collection = client.get_collection(collection_name)
                 return chroma_collection.count() > 0

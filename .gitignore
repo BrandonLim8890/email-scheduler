@@ -2,3 +2,4 @@
 chroma_store/
 .DS_Store/
 .env
+__pycache__/

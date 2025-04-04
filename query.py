@@ -1,14 +1,17 @@
+import os
+
+from dotenv import load_dotenv
 from langchain import hub
-from langgraph.graph import START, StateGraph
-from typing_extensions import List, TypedDict
 from langchain_chroma import Chroma
+from langchain_core.documents import Document
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_openai import ChatOpenAI
-from langchain_core.documents import Document
-import os
-from dotenv import load_dotenv
+from langgraph.graph import START, StateGraph
+from typing_extensions import List, TypedDict
 
-load_dotenv()
+from utils import connect_model
+
+load_dotenv(override=True)
 
 embeddings = HuggingFaceEmbeddings(model_name=os.environ["EMBEDDING_MODEL_NAME"])
 
@@ -17,11 +20,6 @@ vector_store = Chroma(
     embedding_function=embeddings,
     persist_directory="./chroma_store",
 )
-
-
-def connect_model(api_key, base_url, model):
-    llm = ChatOpenAI(model=model, api_key=api_key, base_url=base_url, temperature=0.4)
-    return llm
 
 
 llm = connect_model(
@@ -67,7 +65,6 @@ if __name__ == "__main__":
 
         print("\nSources:")
         context_docs = retrieve({"question": query})["context"]
-        print(len(context_docs))
         for i, doc in enumerate(context_docs[:3]):
             print(f"\nSource {i+1}:")
             print(f"From: {doc.metadata.get('From', 'Unknown')}")

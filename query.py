@@ -65,25 +65,13 @@ def generate(state: State):
         formatted_history.append({"role": "human", "content": exchange["question"]})
         formatted_history.append({"role": "assistant", "content": exchange["answer"]})
 
-    if "chat_history" in conversation_prompt.input_variables:
-        messages = conversation_prompt.invoke(
-            {
-                "question": state["question"],
-                "context": docs_content,
-                "chat_history": formatted_history,
-            }
-        )
-    else:
-        history_summary = "\n".join(
-            [
-                f"Human: {exchange['question']}\nAssistant: {exchange['answer']}"
-                for exchange in chat_history[-2:]
-            ]
-        )
-        contextual_question = f"Previous conversation:\n{history_summary}\n\nCurrent question: {state['question']}"
-        messages = conversation_prompt.invoke(
-            {"question": contextual_question, "context": docs_content}
-        )
+    messages = conversation_prompt.invoke(
+        {
+            "question": state["question"],
+            "context": docs_content,
+            "chat_history": formatted_history,
+        }
+    )
 
     response = llm.invoke(messages)
     return {"answer": response.content}

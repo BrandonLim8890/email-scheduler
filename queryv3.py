@@ -106,21 +106,31 @@ def generate(state: MessagesState):
         f"Content: {msg.content.strip()}"
         for i, msg in enumerate(tool_messages)
     )
-
     system_message_content = (
-        "You are a helpful assistant whose job is to build a schedule based entirely on the user's emails. "
-        "The user's name is Kay Mann.\n\n"
-        "You will be given snippets of emails that may include subject lines, dates, senders, recipients, and body text. "
-        "These emails may mention meetings, appointments, or events.\n\n"
-        "Your task is to extract and list any events that are mentioned — especially ones with specific dates, times, participants, or locations. "
-        "Assume that if an event is mentioned in an email the user received or was CC'd on, they are likely involved unless stated otherwise.\n\n"
-        "**Only return a bulleted list of events. Do not explain, summarize, or add commentary.**\n"
-        "**If there is no event found, respond with: 'According to your emails, there is nothing scheduled for that day.'**\n\n"
-        "Use this format:\n"
-        "- [Date, Time] — [Meeting/Event name or participants, location if known]\n\n"
+        "You are an assistant for scheduling calendar meetings and appointments.\n"
+        "The user's name is Kay Mann. For every query, you will be given context from the user's email inbox.\n"
+        "The context includes the email content and additional information, as well as metadata such as the subject and date of the email, as well as senders and recipients.\n"
+        "Use the retrieved context to answer the question.\n"
+        "If you don't know the answer, just say that you don't know.\n"
+        "Use three sentences maximum and keep the answer concise.\n\n"
         "Context:\n"
         f"{docs_content}"
     )
+
+    # system_message_content = (
+    #     "You are a helpful assistant whose job is to build a schedule based entirely on the user's emails. "
+    #     "The user's name is Kay Mann.\n\n"
+    #     "You will be given snippets of emails that may include subject lines, dates, senders, recipients, and body text. "
+    #     "These emails may mention meetings, appointments, or events.\n\n"
+    #     "Your task is to extract and list any events that are mentioned — especially ones with specific dates, times, participants, or locations. "
+    #     "Assume that if an event is mentioned in an email the user received or was CC'd on, they are likely involved unless stated otherwise.\n\n"
+    #     "**Only return a bulleted list of events. Do not explain, summarize, or add commentary.**\n"
+    #     "**If there is no event found, respond with: 'According to your emails, there is nothing scheduled for that day.'**\n\n"
+    #     "Use this format:\n"
+    #     "- [Date, Time] — [Meeting/Event name or participants, location if known]\n\n"
+    #     "Context:\n"
+    #     f"{docs_content}"
+    # )
 
     conversation_messages = [
         message

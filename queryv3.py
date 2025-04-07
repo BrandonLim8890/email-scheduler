@@ -15,7 +15,9 @@ from pprint import pprint
 from sentence_transformers import CrossEncoder
 import torch
 
-reranker = CrossEncoder("BAAI/bge-reranker-large", device="cuda" if torch.cuda.is_available() else "cpu")
+reranker = CrossEncoder(
+    "BAAI/bge-reranker-large", device="cuda" if torch.cuda.is_available() else "cpu"
+)
 device = "cuda" if torch.cuda.is_available() else "cpu"
 reranker = CrossEncoder("BAAI/bge-reranker-large", device=device)
 
@@ -38,6 +40,7 @@ llm = connect_model(
 )
 
 graph_builder = StateGraph(MessagesState)
+
 
 @tool(response_format="content_and_artifact")
 def retrieve(query: str):
@@ -64,7 +67,13 @@ def query_or_respond(state: MessagesState):
     """Generate tool call for retrieval or respond."""
     router_llm = llm.bind(stop=["\n"])
     should_retrieve = router_llm.invoke(
-        state["messages"] + [{"role": "system", "content": "Is the above question about looking at a schedule/meetings/calendar? Answer 'YES' or 'NO'"}]
+        state["messages"]
+        + [
+            {
+                "role": "user",
+                "content": "Is the above question asking about meetings, events, scheduling, appointments, or related? Answer 'YES' or 'NO'",
+            }
+        ]
     )
     pprint("SHOULD USE RETRIEVE?")
     pprint(should_retrieve.content)
@@ -72,11 +81,13 @@ def query_or_respond(state: MessagesState):
         llm_with_tools = llm.bind_tools([retrieve], tool_choice="required")
     else:
         llm_with_tools = llm.bind_tools([retrieve])
-    
+
     response = llm_with_tools.invoke(state["messages"])
     return {"messages": [response]}
 
+
 tools = ToolNode([retrieve])
+
 
 def generate(state: MessagesState):
     """Generate answer"""
@@ -86,7 +97,7 @@ def generate(state: MessagesState):
             recent_tool_messages.append(message)
         else:
             break
-    
+
     tool_messages = recent_tool_messages[::-1]
 
     docs_content = "\n\n".join(
@@ -111,9 +122,6 @@ def generate(state: MessagesState):
         f"{docs_content}"
     )
 
-
-
-
     conversation_messages = [
         message
         for message in state["messages"]
@@ -128,6 +136,7 @@ def generate(state: MessagesState):
     print(system_message_content)
 
     return {"messages": [response]}
+
 
 graph_builder.add_node(query_or_respond)
 graph_builder.add_node(tools)

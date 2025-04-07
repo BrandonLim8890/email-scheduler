@@ -13,7 +13,7 @@ load_dotenv(override=True)
 
 embeddings = HuggingFaceEmbeddings(model_name=os.environ["EMBEDDING_MODEL_NAME"])
 vector_store = Chroma(
-    collection_name="emails",
+    collection_name="emails_enhanced",
     embedding_function=embeddings,
     persist_directory="./chroma_store",
 )

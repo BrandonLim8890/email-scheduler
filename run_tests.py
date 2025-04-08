@@ -173,12 +173,6 @@ async def main_with_args(
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--model",
-        type=str,
-        default="llama3p1-8b-instruct",
-        help="Name of the model to test",
-    )
-    parser.add_argument(
         "--tests", type=Path, default="tests.yaml", help="YAML file containing test cases"
     )
     parser.add_argument(

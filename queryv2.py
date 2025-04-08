@@ -13,7 +13,7 @@ from utils import connect_model, create_google_calendar_event
 
 load_dotenv(override=True)
 
-embeddings = HuggingFaceEmbeddings(model_name=os.environ["EMBEDDING_MODEL_NAME"])
+embeddings = HuggingFaceEmbeddings(model_name=os.geten("EMBEDDING_MODEL_NAME"))
 reranker = CrossEncoder("BAAI/bge-reranker-large", device="mps")
 
 vector_store = Chroma(
@@ -45,7 +45,6 @@ def add_to_calendar(
         location=location,
         description=description,
     )
-    print(f"Created event: {event.get('summary')}")
     return f"Event '{event.get('summary')}' created on calendar from {start_time} to {end_time} at {location}."
 
 
@@ -91,9 +90,12 @@ if __name__ == "__main__":
         if query.lower() in ["quit", "exit", "q"]:
             break
 
+        last_msg = None
+
         for event in agent_executor.stream(
             {"messages": [system_msg, {"role": "user", "content": query}]},
             stream_mode="values",
             config=config,
         ):
-            event["messages"][-1].pretty_print()
+            last_msg = event["messages"][-1]
+        last_msg.pretty_print()

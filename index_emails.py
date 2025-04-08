@@ -12,7 +12,7 @@ from typing import List
 load_dotenv(override=True)
 
 chroma_path = "./chroma_store"
-collection_name = "emails_enhanced"
+collection_name = "emails_enhanced_full_inbox"
 
 embeddings = HuggingFaceEmbeddings(model_name=os.environ["EMBEDDING_MODEL_NAME"])
 
@@ -93,7 +93,7 @@ def main():
     if not collection_exists_with_docs():
         print(f"Creating new enhanced collection '{collection_name}'")
 
-        df = pd.read_csv("emails/mann_meeting_related_2001_21.csv")
+        df = pd.read_csv("emails/mann_2001_21.csv")
         documents = []
 
         for i, row in df.iterrows():
@@ -108,7 +108,7 @@ def main():
             doc = Document(page_content=content, metadata=metadata)
             documents.append(doc)
 
-        enhanced_documents = enhance_documents_batch(documents, batch_size=5)
+        enhanced_documents = enhance_documents_batch(documents, batch_size=10)
 
         vector_store = Chroma(
             collection_name=collection_name,

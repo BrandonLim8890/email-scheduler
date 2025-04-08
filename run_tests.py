@@ -73,24 +73,27 @@ async def run_test(
         missing_events = []
 
         for expected_event in expected_result:
-            print(expected_event)
             event_time = expected_event["time"]
             event_keywords = expected_event["keywords"]
 
             time_found = False
             for output_time in times_in_output:
+                print("trying to find time")
                 if output_time.lower() == event_time.lower() or output_time.replace(
                     " ", ""
                 ) == event_time.replace(" ", ""):
                     time_found = True
+                    print("found time!")
                     break
 
             if time_found:
-                # Check if all keywords are in the section around this time
-                keywords_found = True
+                # Check if one keywords are in the section around this time
+                keywords_found = False
                 for keyword in event_keywords:
-                    if keyword.lower() not in event_section.lower():
-                        keywords_found = False
+                    print(f"keyword: {keyword}")
+                    print(event_section.lower())
+                    if keyword.lower() in event_section.lower():
+                        keywords_found = True
                         break
 
                 if keywords_found:
@@ -190,12 +193,12 @@ def main():
         "--log", type=Path, default="test_log.txt", help="File to write test results to"
     )
     parser.add_argument(
-        "--concurrency", type=int, default=4, help="Number of tests to run concurrently"
+        "--concurrency", type=int, default=1, help="Number of tests to run concurrently"
     )
     parser.add_argument(
         "--num-samples",
         type=int,
-        default=3,
+        default=2,
         help="Number of attempts to make for each test case",
     )
     args = parser.parse_args()

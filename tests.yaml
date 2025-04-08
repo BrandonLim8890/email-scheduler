@@ -1,12 +1,26 @@
 # basic test
+# - user_messages:
+#   - What recreational activities do I have on June 2nd?
+#   expected_result:
+#   - time: "June 1"
+#     keywords: ["BBQ"]
+#   - time: "June 2"
+#     keywords: ["running"]
+#   - time: "June 29"
+#     keywords: ["child", "work"]
+#   - time: "June 9"
+#     keywords: ["track", "field", "championship"]
+#
+# - user_messages:
+#   - What recreational activities do I have on June 2nd?
+#   expected_result:
+#   - time: "June 2"
+#     keywords: ["fun", "run"]
+#   - time: "June 2"
+#     keywords: ["dad", "5k"]
+#
 - user_messages:
-  - What is on my schedule on June 2nd?
+  - What meetings do I have on June 01?
   expected_result:
-  - time: "9:30 AM"
-    keywords: ["meeting", "team"]
-  - time: "12:00 PM"
-    keywords: ["lunch", "client"]
-  - time: "2:30 PM"
-    keywords: ["presentation", "project"]
-  - time: "4:00 PM"
-    keywords: ["call", "stakeholders"]
+    - time: "11:00"
+      keywords: ["MDEA", "David", "Hunt"]

@@ -1,3 +1,4 @@
+import sys
 from email.message import Message
 import os
 from dotenv import load_dotenv
@@ -55,7 +56,6 @@ def retrieve(query: str):
     scored_docs.sort(key=lambda x: x[1], reverse=True)
 
     top_docs = [doc for doc, score in scored_docs[:5]]
-
     serialized = "\n\n".join(
         f"Source: {doc.metadata}\nContent: {doc.page_content}" for doc in top_docs
     )
@@ -75,8 +75,6 @@ def query_or_respond(state: MessagesState):
             }
         ]
     )
-    pprint("SHOULD USE RETRIEVE?")
-    pprint(should_retrieve.content)
     if "YES" in should_retrieve.content:
         llm_with_tools = llm.bind_tools([retrieve], tool_choice="required")
     else:
@@ -142,9 +140,6 @@ def generate(state: MessagesState):
     prompt = [SystemMessage(system_message_content)] + conversation_messages
 
     response = llm.invoke(prompt)
-    print("\n\n==== SYSTEM PROMPT ====\n")
-    print(system_message_content)
-
     return {"messages": [response]}
 
 
@@ -167,14 +162,23 @@ config = {"configurable": {"thread_id": "thread_id"}}
 graph = graph_builder.compile(checkpointer=memory)
 
 if __name__ == "__main__":
-    while True:
-        query = input("\nEnter your question (or 'quit' to exit): ")
-        if query.lower() in ["quit", "exit", "q"]:
+    if sys.stdin.isatty():
+        input_source = iter(lambda: input("User (blank to quit): "), "")
+    else:
+        input_source = sys.stdin.read().strip().split("\n")
+
+    for user_input in input_source:
+        user_input = user_input.strip()
+        if not user_input:
             break
 
+        last_message = None
+
         for step in graph.stream(
-            {"messages": [{"role": "user", "content": query}]},
+            {"messages": [{"role": "user", "content": user_input}]},
             stream_mode="values",
             config=config,
         ):
-            step["messages"][-1].pretty_print()
+            last_message = step["messages"][-1]
+
+        last_message.pretty_print()

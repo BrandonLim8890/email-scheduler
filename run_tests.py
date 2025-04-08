@@ -61,10 +61,12 @@ async def run_test(
         stderr = stderr.decode("utf-8")
 
         # Get last few lines
-        output_lines = stdout.strip().split('\n')
-        event_section = '\n'.join(output_lines[-10:])
+        output_lines = stdout.strip().split("\n")
+        event_section = "\n".join(output_lines[-10:])
 
-        times_in_output = re.findall(r'(\d{1,2}:\d{2}(?:\s*[APap][Mm])?)', event_section)
+        times_in_output = re.findall(
+            r"(\d{1,2}:\d{2}(?:\s*[APap][Mm])?)", event_section
+        )
 
         all_events_found = True
         found_events = []
@@ -72,12 +74,14 @@ async def run_test(
 
         for expected_event in expected_result:
             print(expected_event)
-            event_time = expected_event['time']
-            event_keywords = expected_event['keywords']
+            event_time = expected_event["time"]
+            event_keywords = expected_event["keywords"]
 
             time_found = False
             for output_time in times_in_output:
-                if output_time.lower() == event_time.lower() or output_time.replace(" ", "") == event_time.replace(" ", ""):
+                if output_time.lower() == event_time.lower() or output_time.replace(
+                    " ", ""
+                ) == event_time.replace(" ", ""):
                     time_found = True
                     break
 
@@ -88,18 +92,22 @@ async def run_test(
                     if keyword.lower() not in event_section.lower():
                         keywords_found = False
                         break
-                
+
                 if keywords_found:
                     found_events.append(expected_event)
                 else:
-                    missing_events.append({"event": expected_event, "reason": "keywords not found"})
+                    missing_events.append(
+                        {"event": expected_event, "reason": "keywords not found"}
+                    )
                     all_events_found = False
             else:
-                missing_events.append({"event": expected_event, "reason": "time not found"})
+                missing_events.append(
+                    {"event": expected_event, "reason": "time not found"}
+                )
                 all_events_found = False
 
         success = all_events_found
-    
+
         log = f"Messages: {user_messages}\n"
         log += f"Expected events: {expected_result}\n"
         log += f"Found events: {found_events}\n"
@@ -173,7 +181,10 @@ async def main_with_args(
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--tests", type=Path, default="tests.yaml", help="YAML file containing test cases"
+        "--tests",
+        type=Path,
+        default="tests.yaml",
+        help="YAML file containing test cases",
     )
     parser.add_argument(
         "--log", type=Path, default="test_log.txt", help="File to write test results to"
@@ -190,9 +201,7 @@ def main():
     args = parser.parse_args()
 
     asyncio.run(
-        main_with_args(
-            args.tests, args.log, args.concurrency, args.num_samples
-        )
+        main_with_args(args.tests, args.log, args.concurrency, args.num_samples)
     )
 
 

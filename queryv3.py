@@ -1,21 +1,19 @@
-import sys
-from email.message import Message
 import os
+import sys
+
 from dotenv import load_dotenv
 from langchain_chroma import Chroma
-from langchain_core.runnables.config import RunnableConfig
+from langchain_core.messages import SystemMessage
+from langchain_core.tools import tool
 from langchain_huggingface import HuggingFaceEmbeddings
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, MessagesState, StateGraph
-from langgraph.prebuilt import ToolNode
-from utils import connect_model
-from langchain_core.tools import tool
 from langgraph.prebuilt import ToolNode, tools_condition
-from langchain_core.messages import SystemMessage
-from pprint import pprint
 from sentence_transformers import CrossEncoder
 
-reranker = CrossEncoder("BAAI/bge-reranker-large", device='mps')
+from utils import connect_model
+
+reranker = CrossEncoder("BAAI/bge-reranker-large", device="mps")
 
 
 load_dotenv(override=True)
@@ -104,7 +102,7 @@ def generate(state: MessagesState):
         "The user's name is Kay Mann. For every query, you will be given context from the user's email inbox.\n"
         "The context includes the email content and additional information, as well as metadata such as the subject and date of the email, as well as senders and recipients.\n"
         "Use the retrieved context to answer the question.\n"
-            "The output of the schedule should be in the following format:\n'Schedule:\n - {MMDD} {hh:mm}{AM/PM}: {event}\n - {MMDD} {hh:mm}{AM/PM}: {event}'\n"
+        "The output of the schedule should be in the following format:\n'Schedule:\n - {MMDD} {hh:mm}{AM/PM}: {event}\n - {MMDD} {hh:mm}{AM/PM}: {event}'\n"
         "If there is no schedule, then output:\n'Schedule:\nNo events found.'\n"
         "If you don't know the answer then output:\n'I don't know'.\n"
         "Use three sentences maximum and keep the answer concise.\n\n"

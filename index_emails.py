@@ -1,13 +1,15 @@
-from langchain_core.documents import Document
-from langchain_chroma import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
-import pandas as pd
 import os
-from dotenv import load_dotenv
-from utils import connect_model
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
 from typing import List
+
+import pandas as pd
+from dotenv import load_dotenv
+from langchain_chroma import Chroma
+from langchain_core.documents import Document
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_huggingface import HuggingFaceEmbeddings
+
+from utils import connect_model
 
 load_dotenv(override=True)
 

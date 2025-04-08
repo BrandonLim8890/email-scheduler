@@ -1,7 +1,8 @@
-from langchain_openai import ChatOpenAI
+import os
+
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-import os
+from langchain_openai import ChatOpenAI
 
 
 def connect_model(api_key, base_url, model, temperature=0.4):

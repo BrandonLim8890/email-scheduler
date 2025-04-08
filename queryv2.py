@@ -23,9 +23,9 @@ vector_store = Chroma(
 )
 
 llm = connect_model(
-    api_key=os.environ["API_KEY"],
-    base_url=os.environ["API_BASE_URL"],
-    model=os.environ["CHAT_MODEL_NAME"],
+    api_key=os.getenv("API_KEY"),
+    base_url=os.getenv("API_BASE_URL"),
+    model=os.getenv("CHAT_MODEL_NAME"),
 )
 
 

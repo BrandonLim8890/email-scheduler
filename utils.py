@@ -14,7 +14,6 @@ def connect_model(api_key, base_url, model, temperature=0.4):
 def create_google_calendar_event(
     title, start_time, end_time, location="", description=""
 ):
-    # Define the scope and get credentials from service account file
     SCOPES = ["https://www.googleapis.com/auth/calendar"]
     SERVICE_ACCOUNT_FILE = os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE")
 

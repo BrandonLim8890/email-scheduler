@@ -10,19 +10,21 @@ from langchain_core.output_parsers import StrOutputParser
 from typing import List
 
 load_dotenv(override=True)
+
 chroma_path = "./chroma_store"
 collection_name = "emails_enhanced"
+
 embeddings = HuggingFaceEmbeddings(model_name=os.environ["EMBEDDING_MODEL_NAME"])
+
 llm = connect_model(
-    api_key=os.environ["API_KEY"],
-    base_url=os.environ["API_BASE_URL"],
-    model=os.environ["CHAT_MODEL_NAME"],
+    api_key=os.getenv("API_KEY"),
+    base_url=os.getenv("API_BASE_URL"),
+    model=os.getenv("CHAT_MODEL_NAME"),
 )
 
 
 def enhance_document(document: Document) -> Document:
     """Enhance a document with LLM-generated supplementary information."""
-
     enhancement_prompt = ChatPromptTemplate.from_template(
         """
     Please analyze the following email text and provide:

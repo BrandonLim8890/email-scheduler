@@ -1,0 +1,12 @@
+# basic test
+- user_messages:
+  - What is on my schedule on June 2nd?
+  expected_result:
+  - time: "9:30 AM"
+    keywords: ["meeting", "team"]
+  - time: "12:00 PM"
+    keywords: ["lunch", "client"]
+  - time: "2:30 PM"
+    keywords: ["presentation", "project"]
+  - time: "4:00 PM"
+    keywords: ["call", "stakeholders"]

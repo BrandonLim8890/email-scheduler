@@ -11,16 +11,10 @@
 #   - time: "June 9"
 #     keywords: ["track", "field", "championship"]
 #
-# - user_messages:
-#   - What recreational activities do I have on June 2nd?
-#   expected_result:
-#   - time: "June 2"
-#     keywords: ["fun", "run"]
-#   - time: "June 2"
-#     keywords: ["dad", "5k"]
-#
+- user_messages:
+  - What meetings do I have on June 2nd?
+  expected_result: "There are no meetings on June 2nd"
+
 - user_messages:
   - What meetings do I have on June 01?
-  expected_result:
-    - time: "11:00"
-      keywords: ["MDEA", "David", "Hunt"]
+  expected_result: "MDEA meeting with David Hunt on 06/01 11:00 AM"

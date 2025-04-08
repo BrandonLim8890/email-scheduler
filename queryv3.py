@@ -14,13 +14,8 @@ from langgraph.prebuilt import ToolNode, tools_condition
 from langchain_core.messages import SystemMessage
 from pprint import pprint
 from sentence_transformers import CrossEncoder
-import torch
 
-reranker = CrossEncoder(
-    "BAAI/bge-reranker-large", device="cuda" if torch.cuda.is_available() else "cpu"
-)
-device = "cuda" if torch.cuda.is_available() else "cpu"
-reranker = CrossEncoder("BAAI/bge-reranker-large", device=device)
+reranker = CrossEncoder("BAAI/bge-reranker-large", device='mps')
 
 
 load_dotenv(override=True)
@@ -109,26 +104,13 @@ def generate(state: MessagesState):
         "The user's name is Kay Mann. For every query, you will be given context from the user's email inbox.\n"
         "The context includes the email content and additional information, as well as metadata such as the subject and date of the email, as well as senders and recipients.\n"
         "Use the retrieved context to answer the question.\n"
-        "If you don't know the answer, just say that you don't know.\n"
+            "The output of the schedule should be in the following format:\n'Schedule:\n - {MMDD} {hh:mm}{AM/PM}: {event}\n - {MMDD} {hh:mm}{AM/PM}: {event}'\n"
+        "If there is no schedule, then output:\n'Schedule:\nNo events found.'\n"
+        "If you don't know the answer then output:\n'I don't know'.\n"
         "Use three sentences maximum and keep the answer concise.\n\n"
         "Context:\n"
         f"{docs_content}"
     )
-
-    # system_message_content = (
-    #     "You are a helpful assistant whose job is to build a schedule based entirely on the user's emails. "
-    #     "The user's name is Kay Mann.\n\n"
-    #     "You will be given snippets of emails that may include subject lines, dates, senders, recipients, and body text. "
-    #     "These emails may mention meetings, appointments, or events.\n\n"
-    #     "Your task is to extract and list any events that are mentioned — especially ones with specific dates, times, participants, or locations. "
-    #     "Assume that if an event is mentioned in an email the user received or was CC'd on, they are likely involved unless stated otherwise.\n\n"
-    #     "**Only return a bulleted list of events. Do not explain, summarize, or add commentary.**\n"
-    #     "**If there is no event found, respond with: 'According to your emails, there is nothing scheduled for that day.'**\n\n"
-    #     "Use this format:\n"
-    #     "- [Date, Time] — [Meeting/Event name or participants, location if known]\n\n"
-    #     "Context:\n"
-    #     f"{docs_content}"
-    # )
 
     conversation_messages = [
         message

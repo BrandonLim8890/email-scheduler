@@ -1,0 +1,21 @@
+# testing it can remember multiple things as well as add non meetings to schedule (dates and info of flights + when a paper was sent)
+- user_messages:
+    - Give me my flight info for my upcoming flight in early June and add it to my schedule
+    - Also please remind me when the revised Escrow agreement was emailed to us
+    - Add that to my schedule as well
+  expected_result: "06/04 7:45AM: Flight from Houston, TX to Memphis, TN\n 06/04 05:55PM: Flight from Memphis, TN to Houston TX \n 05/30: Revised Escrow Agreement emailed to you"
+
+# Testing if it can identify the date from a email not mentioning the specific date: i.e
+# I'm planning on taking next Thursday and Friday off. Next Thursday is Paige's 21st birthday
+- user_messages:
+    - When is Paiges 21's birthday? What days off do i have coming up?
+    - Could you add them to my schedule
+  expected_result: "06/07: Paige's 21st birthday (day off) \n 06/08: Day off"
+
+# Testing if it falls for made up meetings/people that sound plausible (should just say I dont know about these)
+- user_messages:
+    - Could you give me info on when the RITE meeting is and add it to my schedule?
+    - Could you check for and add the FLOC crossover to my schedule
+    - When is my meeting with Gregory Varnell, add it to my schedule
+    - Do you have any info on Malcom Breer
+  expected_result: "I dont have any information, No events found"

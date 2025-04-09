@@ -13,11 +13,11 @@ from utils import connect_model, create_google_calendar_event
 
 load_dotenv(override=True)
 
-embeddings = HuggingFaceEmbeddings(model_name=os.geten("EMBEDDING_MODEL_NAME"))
+embeddings = HuggingFaceEmbeddings(model_name=os.getenv("EMBEDDING_MODEL_NAME"))
 reranker = CrossEncoder("BAAI/bge-reranker-large", device="mps")
 
 vector_store = Chroma(
-    collection_name="emails_enhanced",
+    collection_name="emails_enhanced_full_inbox",
     embedding_function=embeddings,
     persist_directory="./chroma_store",
 )

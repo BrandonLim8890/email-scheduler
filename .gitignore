@@ -3,3 +3,5 @@
 .env
 __pycache__/
 test_log.txt
+chroma_store/
+.DS_Store

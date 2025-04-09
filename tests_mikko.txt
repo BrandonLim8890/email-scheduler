@@ -1,0 +1,48 @@
+1. 
+
+user:
+    - what are some fun events I have coming up in june?
+model (should include at least a few of):
+    - **Heights Fun Run 5K** June 2 8am-10am
+    - **Dad's Day 5K** June 2 10am-12pm
+    - **MDEA Happy Hour** June 5 5pm-8pm
+    - **USCAA Track & Field Championships** June 9 8am-5pm
+    - **Boys & Girls Club Summer Camp Weekend** June 22-24
+    - **Bring Your Child to Work Day** June 29
+user:
+    - tell me about bring your child day
+model:
+    - email jennifer milligan if interested in volunteering
+    - volunteering activities include:
+        - Registration Table
+        - Houston Police Dept / Stranger Danger / Fingerprinting
+        - Outdoor Activities (SPCA pets, Balloon King, kids crafts, etc.)
+        - Business Etiquette class
+        - Business Art (kids' resumes, etc)
+        - Lunch ticket sales/coordination (in Antioch Park)
+
+2.
+user:
+    - what's on my schedule june 5?
+model:
+    - Meeting on the GE End World Hunger Standard Contract 9am-10:30am 
+    - MDEA presentation 4pm-5pm
+    - MDEA Happy Hour after the presentation 5pm-8pm
+user:
+    - who's at the morning meeting
+model:
+    - enron: shirley oliver, kay mann, john rigby, sheila tweed, lisa bills
+    - other: p. thompson
+
+3. 
+user: 
+    - do i have any traveling during the first week of june?
+model:
+    - flight from Houston to Memphis June 4
+user:
+    - any other details?
+model:
+    - depart @ 7:45am return @ 5:55pm same day
+    - continental airlines flight
+    - seats 11C and 12C respectively
+    - no first class upgrades available

@@ -1,0 +1,174 @@
+
+Test 7
+Success: True
+Expected: Should include a few of: Fun Run 5k on June 2, Dad's day 5k June 2, MDEA happy hour on June 5, USCAA Track & Field Championship on June 9, Boys & Girls Club Summer Camp Weekend June 22-24, Bring your child to work day June 29
+Full stdout: ================================== Ai Message ==================================
+
+In June, you have several fun events coming up:
+
+1. **Heights Fun Run 5K** and **Dad's Day 5K** on June 2.
+2. **USCAA Track & Field Championships** on June 9 at Rice University.
+3. **Bring Your Child to Work Day** on June 29.
+
+Evaluator Output: true - The assistant's output includes all the relevant events with accurate dates and locations, matching the expected results.
+--------------------------------------------------------------------------------
+
+Test 12
+Success: True
+Expected: Kayaking is planned in Lake Woodlands
+Full stdout: ================================== Ai Message ==================================
+
+The kayaking plans mentioned involve going to Lake Woodlands this weekend. Kathleen Carnahan invited you to join her for the kayaking activity. If you're interested, it seems like a fun opportunity to enjoy the outdoors!
+
+Evaluator Output: true - The assistant's output conveys the same message about kayaking in Lake Woodlands, matching the expected result's key details.
+--------------------------------------------------------------------------------
+
+Test 3
+Success: True
+Expected: No events / I don't know
+Full stdout: ================================== Ai Message ==================================
+
+I don't know.
+
+Evaluator Output: true - The assistant's output matches the expected result by stating "I don't know," which conveys the same message that there are no events.
+--------------------------------------------------------------------------------
+
+Test 8
+Success: True
+Expected: 9-10.30am Meeting on GE End World Hunger Standard Contract, MDEA presentation 4pm-5pm, MDEA Happy hour 5pm-8pm. Shirley Oliver, Kay Mann, John Rigby, Sheila Tweed Lisa Bills and P. Thompson should be at the morning meeting.
+Full stdout: ================================== Ai Message ==================================
+
+On June 5th, you have two events scheduled: 
+
+1. A meeting to discuss the GE End World Hunger Standard Contract from 9:00 am to 10:30 am in Conference Room EB38C2.
+2. A presentation on the MDEA delphi application from 4:00 pm to 5:00 pm in room 3125B, followed by a happy hour at the Front Porch Pub from 5:00 pm to 8:00 pm.
+================================== Ai Message ==================================
+
+The attendees for the morning meeting on June 5th include you (Kay Mann), John Rigby, Sheila Tweed, Lisa Bills, and Peter Thompson.
+
+Evaluator Output: true
+
+The assistant's output matches the expected results in terms of time, date, and location. It provides the same events and attendees, ensuring all important details align correctly.
+--------------------------------------------------------------------------------
+
+Test 1
+Success: True
+Expected: There are no meetings on June 2nd / I don't know
+Full stdout: ================================== Ai Message ==================================
+
+I don't know.
+
+Evaluator Output: true - The assistant's output matches the expected result by stating "I don't know," which aligns with the user's query about meetings on June 2nd.
+--------------------------------------------------------------------------------
+
+Test 9
+Success: True
+Expected: Flight from Houson to Memphis June 4 that departs @ 7.45am, returning @ 5.55pm on the same day. It is a continental airlines flight on seats 11C and 12C respectively. No first class upgrades are available
+Full stdout: ================================== Ai Message ==================================
+
+Yes, you have traveling scheduled during the first week of June. You are flying from Houston, TX to Memphis, TN on June 4, 2001, departing at 7:45 AM and returning the same day at 5:55 PM. Both flights are confirmed with Continental Airlines.
+================================== Ai Message ==================================
+
+Your flight from Houston to Memphis is operated by Continental Express on an Embraer EMB 145 aircraft. You are assigned to seat 11C for the outbound flight and seat 12C for the return flight. The flights are non-stop, with a duration of approximately 1 hour and 45 minutes each.
+
+Evaluator Output: true
+
+The assistant's output matches the expected results in terms of the flight details: it confirms the departure and return times (7:45 AM and 5:55 PM), the date (June 4, 2001), and the locations (Houston to Memphis). Additionally, it provides the correct airline (Continental Airlines) and seat assignments (11C and 12C).
+--------------------------------------------------------------------------------
+
+Test 4
+Success: True
+Expected: 06/04 7:45AM: Flight from Houston, TX to Memphis, TN
+ 06/04 05:55PM: Flight from Memphis, TN to Houston TX 
+ 05/30: Revised Escrow Agreement emailed to you
+Full stdout: ================================== Ai Message ==================================
+
+Your upcoming flights are as follows: 
+
+1. Departing from Houston to Memphis on June 4, 2001, at 7:45 AM, arriving at 9:30 AM (Flight CO 4096, Seat 11C).
+2. Returning from Memphis to Houston on June 4, 2001, at 5:55 PM, arriving at 7:40 PM (Flight CO 3841, Seat 12C).
+
+Both flights have been added to your schedule.
+================================== Ai Message ==================================
+
+The revised Escrow Agreement was emailed to you on May 30, 2001. It was sent by Marisa Reuter, and it confirmed the necessary changes regarding Northwestern Generation I, LLC as the depositor. If you need further details or actions related to this agreement, let me know!
+================================== Ai Message ==================================
+
+The event for the revised Escrow Agreement email has been added to your schedule for May 30, 2001. If you need anything else, feel free to ask!
+
+Evaluator Output: true
+
+The assistant's output accurately reflects the expected results, providing the same flight details (time, date, and location) and confirming the email of the revised Escrow Agreement on May 30, 2001. The additional information about flight numbers, seats, and the sender of the email does not alter the essential details.
+--------------------------------------------------------------------------------
+
+Test 5
+Success: False
+Expected: 06/07: Paige's 21st birthday, 06/07 day off, 06/08: Day off
+Full stdout: ================================== Ai Message ==================================
+
+Paige's 21st birthday is next Thursday, May 31st. You have planned to take next Thursday and Friday off.
+================================== Ai Message ==================================
+
+I have added the following events to your schedule: 
+
+1. Day Off for Paige's 21st Birthday on May 31st.
+2. Day Off on June 1st.
+
+Evaluator Output: false - The assistant's output incorrectly states the date of Paige's 21st birthday as May 31st instead of June 7th, and the days off are also misaligned with the expected dates.
+--------------------------------------------------------------------------------
+
+Test 10
+Success: True
+Expected: I don't know
+Full stdout: ================================== Ai Message ==================================
+
+I don't know.
+
+Evaluator Output: true - The assistant's output matches the expected result exactly, conveying the same message.
+--------------------------------------------------------------------------------
+
+Test 2
+Success: False
+Expected: MDEA meeting with David Hunt on 06/01 11:00 AM
+Full stdout: ================================== Ai Message ==================================
+
+You have a meeting scheduled on June 4, 2001, at 11:00 a.m. with David Hunt. This meeting was confirmed in an email exchange on June 1, 2001.
+
+Evaluator Output: false
+
+The assistant's output indicates a meeting on June 4, 2001, while the expected result specifies June 1, 2001. The date does not match, which is a crucial detail.
+--------------------------------------------------------------------------------
+
+Test 11
+Success: True
+Expected: The Florida opportunities include projects in Corbett, Deerfield, Pompano and South Dade. There is a 50% probability of success. There is also interest in Georgia and Louisiana. The final bids for the turbines are due on 06/05/2001
+Full stdout: ================================== Ai Message ==================================
+
+The Florida opportunities mentioned include projects in Corbett, Deerfield, Pompano, and South Dade, with an estimated success probability of about 50%. Additionally, there is ongoing collaboration with Florida Power & Light for further project development work. If the Florida opportunities do not proceed, the turbines may be put back on the market in Q1 of 2002.
+================================== Ai Message ==================================
+
+The final bids for the turbine purchase are due on Tuesday, June 5, 2001. Additionally, the necessary activities for a potential power project with Florida Power & Light should be completed to support a schedule for interconnection by March 15, 2002. There are also specific project timelines mentioned for the Boys & Girls Club summer camp weekends, which are scheduled for June 22-24 and July 6-8, 2001.
+
+Evaluator Output: true
+
+The assistant's output matches the expected results regarding the Florida opportunities (projects in Corbett, Deerfield, Pompano, and South Dade), the probability of success (50%), and the final bids due date (06/05/2001). Although it includes additional details, the critical information remains consistent.
+--------------------------------------------------------------------------------
+
+Test 6
+Success: False
+Expected: I don't know
+Full stdout: ================================== Ai Message ==================================
+
+The RITE meeting is scheduled for Tuesday, June 5th, from 9:00 AM to 10:30 AM in Conference Room EB38C2. I've added both the RITE meeting and the MDEA presentation to your calendar. The MDEA presentation is on the same day from 4:00 PM to 5:00 PM in Room 3125B.
+================================== Ai Message ==================================
+
+I couldn't find specific details about the FLOC crossover, but I've added it to your calendar for June 4th. If you have more information about the time or location, please let me know!
+================================== Ai Message ==================================
+
+Your meeting with Gregory Varnell is scheduled for Monday, June 4th, at 11:00 AM. I've added it to your calendar. If you need any further details or adjustments, let me know!
+================================== Ai Message ==================================
+
+I couldn't find specific information about Malcom Breer in the emails. If you have any particular details or context regarding him, please let me know!
+
+Evaluator Output: false - The assistant's output provides specific details about meetings and events, while the expected result simply states "I don't know." The assistant does not match the expected response in terms of content or tone.
+--------------------------------------------------------------------------------

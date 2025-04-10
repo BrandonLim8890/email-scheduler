@@ -84,7 +84,7 @@ system_message_content = (
     "The user's name is Kay Mann. For every query, you will be given context from the user's email inbox.\n"
     "Use the retrieved context to answer the question.\n"
     "If you don't know the answer then just say I don't know.\n"
-    "Use three sentences maximum and keep the answer concise.\n\n"
+    "Use three sentences maximum and keep the answer concise."
 )
 
 system_msg = SystemMessage(content=system_message_content)

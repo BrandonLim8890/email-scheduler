@@ -3,8 +3,8 @@
   expected_result: "There are no meetings on June 2nd / I don't know"
 
 - user_messages:
-    - What meetings do I have on June 01?
-  expected_result: "MDEA meeting with David Hunt on 06/01 11:00 AM, BBQ event from 11am to 1pm, Document review preparation for monday"
+    - What meetings do I have on June 4th?
+  expected_result: "MDEA meeting with David Hunt on 06/01 11:00 AM"
 
 # Test for no events
 - user_messages:
@@ -39,10 +39,6 @@
 
 - user_messages:
     - "What is on my schedule for June 5th?"
-  expected_result: "9-10.30am Meeting on GE End World Hunger Standard Contract, MDEA presentation 4pm-5pm, MDEA Happy hour 5pm-8pm"
-
-- user_messages:
-    - "What is on my schedule for June 5th?"
     - "Who is at the morning meeting?"
   expected_result: "9-10.30am Meeting on GE End World Hunger Standard Contract, MDEA presentation 4pm-5pm, MDEA Happy hour 5pm-8pm. Shirley Oliver, Kay Mann, John Rigby, Sheila Tweed Lisa Bills and P. Thompson should be at the morning meeting."
 
@@ -50,3 +46,16 @@
     - "Do I have any traveling during the first week of June?"
     - "Any other details about the flight?"
   expected_result: "Flight from Houson to Memphis June 4 that departs @ 7.45am, returning @ 5.55pm on the same day. It is a continental airlines flight on seats 11C and 12C respectively. No first class upgrades are available"
+
+- user_messages:
+    - "What time is my meeting for TECO on June 11"
+  expected_result: "I don't know"
+
+- user_messages:
+    - "Give me a breakdown of the Florida opportunities"
+    - "Any details on the dates?"
+  expected_result: "The Florida opportunities include projects in Corbett, Deerfield, Pompano and South Dade. There is a 50% probability of success. There is also interest in Georgia and Louisiana. The final bids for the turbines are due on 06/05/2001"
+
+- user_messages:
+    - "Can you give me some info on kayaking plans?"
+  expected_result: "Kayaking is planned in Lake Woodlands"

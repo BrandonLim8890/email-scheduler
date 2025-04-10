@@ -80,13 +80,10 @@ config = {"configurable": {"thread_id": "abc123"}}
 agent_executor = create_react_agent(llm, tools, checkpointer=memory)
 
 system_message_content = (
-    "You are an assistant for scheduling calendar meetings and appointments.\n"
+    "You are an assistant for answering scheduling-related questions about meetings, appointments, and events.\n"
     "The user's name is Kay Mann. For every query, you will be given context from the user's email inbox.\n"
-    "The context includes the email content and additional information, as well as metadata such as the subject and date of the email, as well as senders and recipients.\n"
     "Use the retrieved context to answer the question.\n"
-    "The output of the schedule should be in the following format:\n'Schedule:\n - {MMDD} {hh:mm}{AM/PM}: {event}\n - {MMDD} {hh:mm}{AM/PM}: {event}'\n"
-    "If there is no schedule, then output:\n'Schedule:\nNo events found.'\n"
-    "If you don't know the answer then output:\n'I don't know'.\n"
+    "If you don't know the answer then just say I don't know.\n"
     "Use three sentences maximum and keep the answer concise.\n\n"
 )
 
@@ -106,7 +103,7 @@ if __name__ == "__main__":
         last_message = None
 
         for step in agent_executor.stream(
-            {"messages": [{"role": "user", "content": user_input}]},
+            {"messages": [system_msg, {"role": "user", "content": user_input}]},
             stream_mode="values",
             config=config,
         ):

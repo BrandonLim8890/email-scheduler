@@ -43,14 +43,13 @@ from utils import connect_model
 
 load_dotenv(override=True)
 
+
 async def run_test(
-    user_messages: List[str],
-    expected_result: List[str],
-    model_name: str
+    user_messages: List[str], expected_result: List[str], model_name: str
 ) -> Tuple[bool, str]:
 
     model_path = "llama.py"
-    if model_name == '4o_mini':
+    if model_name == "4o_mini":
         model_path = "4o_mini.py"
 
     # Start the agent process
@@ -76,10 +75,14 @@ async def run_test(
         )
 
         comparison_string = f"""
-I need you to compare two schedules, an expected schedule, and a test schedule. Compare both schedules and determine if they are roughly the same. The most important details are the time stamps, but the descriptions are not as important, as long as they convey the same message. Only return "True" or "False".
-Truth Schedule: {expected_result}
+Compare the output from an LLM scheduling assistant with the expected results of a user query. The expected result contains the relevant details or response that the LLM should provide.
+The format of the assistant's output doesn't matter much, but the content should convey the same message. Times, dates, and locations should match exactly. The year is assumed to be 2001 if not stated.
+It's OK if the agent outputs additional details, as long as the important details (time, date, location) match. Return 'true' or 'false' along with a 1-2 sentence explanation.
 
-Test Schedule: {stdout} """
+Expected result: {expected_result}
+
+Asistant Output: {stdout}
+"""
 
         response = model.invoke(comparison_string)
         content_str = response.content
@@ -90,6 +93,7 @@ Test Schedule: {stdout} """
         log += f"Full stdout: {stdout}\n"
         if stderr:
             log += f"Stderr: {stderr}\n"
+        log += f"Evaluator Output: {content_str}\n"
 
         return success, log
 
@@ -161,7 +165,11 @@ def main():
         help="YAML file containing test cases",
     )
     parser.add_argument(
-        "--model", type=str, default="llama", help="Model to run. Default is llama", choices=["llama", "4o_mini"]
+        "--model",
+        type=str,
+        default="llama",
+        help="Model to run. Default is llama",
+        choices=["llama", "4o_mini"],
     )
     parser.add_argument(
         "--log", type=Path, default="test_log.txt", help="File to write test results to"
@@ -178,7 +186,9 @@ def main():
     args = parser.parse_args()
 
     asyncio.run(
-        main_with_args(args.tests, args.model, args.log, args.concurrency, args.num_samples)
+        main_with_args(
+            args.tests, args.model, args.log, args.concurrency, args.num_samples
+        )
     )
 
 

@@ -1,20 +1,57 @@
-# basic test
-# - user_messages:
-#   - What recreational activities do I have on June 2nd?
-#   expected_result:
-#   - time: "June 1"
-#     keywords: ["BBQ"]
-#   - time: "June 2"
-#     keywords: ["running"]
-#   - time: "June 29"
-#     keywords: ["child", "work"]
-#   - time: "June 9"
-#     keywords: ["track", "field", "championship"]
-#
 - user_messages:
   - What meetings do I have on June 2nd?
   expected_result: "There are no meetings on June 2nd"
 
 - user_messages:
   - What meetings do I have on June 01?
-  expected_result: "MDEA meeting with David Hunt on 06/01 11:00 AM"
+  expected_result: "MDEA meeting with David Hunt on 06/01 11:00 AM, BBQ event from 11am to 1pm, Document review preparation for monday"
+
+# Test for no events
+- user_messages:
+  - What meetings do I have on May 27?
+  expected_result: "No events or I don't know"
+
+# testing it can remember multiple things as well as add non meetings to schedule (dates and info of flights + when a paper was sent)
+- user_messages:
+  - Give me my flight info for my upcoming flight in early June and add it to my schedule
+  - Also please remind me when the revised Escrow agreement was emailed to us
+  - Add that to my schedule as well
+  expected_result: "06/04 7:45AM: Flight from Houston, TX to Memphis, TN\n 06/04 05:55PM: Flight from Memphis, TN to Houston TX \n 05/30: Revised Escrow Agreement emailed to you"
+
+# Testing if it can identify the date from a email not mentioning the specific date: i.e
+# I'm planning on taking next Thursday and Friday off. Next Thursday is Paige's 21st birthday
+- user_messages:
+  - When is Paiges 21's birthday? What days off do i have coming up?
+  - Could you add them to my schedule
+  expected_result: "06/07: Paige's 21st birthday, 06/07 day off, 06/08: Day off"
+
+# Testing if it falls for made up meetings/people that sound plausible (should just say I dont know about these)
+- user_messages:
+  - Could you give me info on when the RITE meeting is and add it to my schedule?
+  - Could you check for and add the FLOC crossover to my schedule
+  - When is my meeting with Gregory Varnell, add it to my schedule
+  - Do you have any info on Malcom Breer
+  expected_result: "I don't know"
+
+- user_messages:
+  - "what are some fun events I have coming up in june?"
+  expected_result: "Fun Run 5k on June 2 8-10am, Dad's day 5k June 2 10-12pm, MDEA happy hour on June 5 5-8pm, USCAA Track & Field Championship on June 9 8-5pm, Boys & Girls Club Summer Camp Weekend June 22-24, Bring your child to work day June 29"
+
+- user_messages:
+  - "What is on my schedule for June 5th?"
+  expected_result: "9-10.30am Meeting on GE End World Hunger Standard Contract, MDEA presentation 4pm-5pm, MDEA Happy hour 5pm-8pm"
+
+- user_messages:
+  - "What is on my schedule for June 5th?"
+  - "Who is at the morning meeting?"
+  expected_result: "9-10.30am Meeting on GE End World Hunger Standard Contract, MDEA presentation 4pm-5pm, MDEA Happy hour 5pm-8pm. Shirley Oliver, Kay Mann, John Rigby, Sheila Tweed Lisa Bills and P. Thompson should be at the morning meeting."
+
+- user_messages:
+  - "What is on my schedule for June 5th?"
+  - "Who is at the morning meeting?"
+  expected_result: "9-10.30am Meeting on GE End World Hunger Standard Contract, MDEA presentation 4pm-5pm, MDEA Happy hour 5pm-8pm. Shirley Oliver, Kay Mann, John Rigby, Sheila Tweed Lisa Bills and P. Thompson should be at the morning meeting."
+
+- user_messages:
+  - "Do I have any traveling during the first week of June?"
+  - "Any other details about the flight?"
+  expected_result: "Flight from Houson to Memphis June 4 that departs @ 7.45am, returning @ 5.55pm on the same day. It is a continental airlines flight on seats 11C and 12C respectively. No first class upgrades are available"

@@ -22,7 +22,7 @@ embeddings = HuggingFaceEmbeddings(model_name=os.environ["EMBEDDING_MODEL_NAME"]
 
 
 vector_store = Chroma(
-    collection_name="emails_enhanced",
+    collection_name="emails_enhanced_full_inbox",
     embedding_function=embeddings,
     persist_directory="./chroma_store",
 )
@@ -30,7 +30,7 @@ vector_store = Chroma(
 llm = connect_model(
     api_key=os.environ["API_KEY"],
     base_url=os.environ["API_BASE_URL"],
-    model=os.environ["CHAT_MODEL_NAME"],
+    model="llama3p1-8b-instruct",
 )
 
 graph_builder = StateGraph(MessagesState)
@@ -68,6 +68,7 @@ def query_or_respond(state: MessagesState):
             }
         ]
     )
+
     if "YES" in should_retrieve.content:
         llm_with_tools = llm.bind_tools([retrieve], tool_choice="required")
     else:
@@ -98,13 +99,10 @@ def generate(state: MessagesState):
         for i, msg in enumerate(tool_messages)
     )
     system_message_content = (
-        "You are an assistant for scheduling calendar meetings and appointments.\n"
-        "The user's name is Kay Mann. For every query, you will be given context from the user's email inbox.\n"
+        "You are an assistant for scheduling calendar meetings and appointments for a specific user.\n"
+        "The user's name is 'Kay Mann'. For every query, you will be given context from the user's email inbox.\n"
         "The context includes the email content and additional information, as well as metadata such as the subject and date of the email, as well as senders and recipients.\n"
         "Use the retrieved context to answer the question.\n"
-        "The output of the schedule should be in the following format:\n'Schedule:\n - {MMDD} {hh:mm}{AM/PM}: {event}\n - {MMDD} {hh:mm}{AM/PM}: {event}'\n"
-        "If there is no schedule, then output:\n'Schedule:\nNo events found.'\n"
-        "If you don't know the answer then output:\n'I don't know'.\n"
         "Use three sentences maximum and keep the answer concise.\n\n"
         "Context:\n"
         f"{docs_content}"

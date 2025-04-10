@@ -17,7 +17,7 @@ TESTS_FILE is the path to a YAML file with the following format:
 ```yaml
 - user_messages:
     - What is on my schedule for June 1?
-  expected_result: 
+  expected_result:
 ```
 
 Thus each test case in the YAML file is a list of user messages to send to
@@ -31,87 +31,32 @@ We log all interactions to LOG_FILE
 """
 
 import asyncio
+from dotenv import load_dotenv
 import yaml
 import argparse
 from pathlib import Path
+import os
 
 from typing import List, Tuple
-import re
 import tqdm
-import re
+from utils import connect_model
 
-def extract_schedule_section(text):
-    """
-    Extracts the schedule section from text.
-    
-    Returns:
-        The schedule section or None if no schedule section is found.
-        For empty schedules, returns an empty string.
-    """
-    # Check for empty schedule patterns
-    if re.search(r'Schedule:.*\s*Empty\.?', text, re.IGNORECASE):
-        return ""
-    
-    # Extract the schedule section
-    schedule_pattern = r'Schedule:([^]*?)(?:\n\n|\n[^\s-]|$)'
-    match = re.search(schedule_pattern, text, re.DOTALL)
-    
-    if match:
-        return match.group(1).strip()
-    
-    return None
-
-def extract_schedule_events(text):
-    """
-    Extracts schedule events from text.
-    
-    Args:
-        text: The text to extract schedule events from.
-    
-    Returns:
-        List of dictionaries with keys:
-        - date: The date of the event (e.g., "06/01")
-        - time: The time of the event (may be None)
-        - description: The event description
-        
-        Returns an empty list if the schedule is empty or no events are found.
-    """
-    schedule_section = extract_schedule_section(text)
-    
-    if schedule_section is None or schedule_section == "":
-        return []
-    
-    if re.search(r'No events found', schedule_section, re.IGNORECASE):
-        return []
-    
-    # Pattern to match:
-    # 1. Date in MM/DD format (allows single digit)
-    # 2. Optional time or time range
-    # 3. Event description
-    pattern = r'\s*-\s*(\d{1,2}/\d{1,2})(?:\s+(\d{1,2}:\d{2}(?:\s*[APap][Mm])?(?:\s*-\s*\d{1,2}:\d{2}(?:\s*[APap][Mm])?)?))?:?\s*(.*)'
-    
-    events = []
-    for match in re.finditer(pattern, schedule_section):
-        date = match.group(1)
-        time = match.group(2) if match.group(2) else None
-        description = match.group(3)
-        
-        events.append({
-            'date': date,
-            'time': time,
-            'description': description
-        })
-    
-    return events
+load_dotenv(override=True)
 
 async def run_test(
     user_messages: List[str],
     expected_result: List[str],
+    model_name: str
 ) -> Tuple[bool, str]:
+
+    model_path = "llama.py"
+    if model_name == '4o_mini':
+        model_path = "4o_mini.py"
+
     # Start the agent process
     process = await asyncio.create_subprocess_exec(
         "python",
-        "queryv3.py",
+        model_path,
         stdin=asyncio.subprocess.PIPE,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
@@ -124,63 +69,24 @@ async def run_test(
         stdout = stdout.decode("utf-8")
         stderr = stderr.decode("utf-8")
 
-        extracted_events = extract_schedule_events(stdout)
+        model = connect_model(
+            api_key=os.environ["API_KEY"],
+            base_url=os.environ["API_BASE_URL"],
+            model="gpt-4o-mini",
+        )
 
-        found_events = []
-        missing_events = []
+        comparison_string = f"""
+I need you to compare two schedules, an expected schedule, and a test schedule. Compare both schedules and determine if they are roughly the same. The most important details are the time stamps, but the descriptions are not as important, as long as they convey the same message. Only return "True" or "False".
+Truth Schedule: {expected_result}
 
-        for expected_event in expected_result:
-            expected_time = expected_event.get("time")
-            expected_keywords = expected_event.get("keywords", [])
-            expected_date = expected_event.get("date")
+Test Schedule: {stdout} """
 
-            event_found = False
-            
-            for event in extracted_events:
-                date_match = True
-                if expected_date:
-                     # Normalize date format (remove leading zeros)
-                    norm_expected_date = expected_date.replace('0', '', 1) if expected_date.startswith('0') else expected_date
-                    norm_event_date = event['date'].replace('0', '', 1) if event['date'].startswith('0') else event['date']
-                    date_match = norm_expected_date == norm_event_date
+        response = model.invoke(comparison_string)
+        content_str = response.content
 
-                time_match = True
-                if expected_time and event['time']:
-                    # Normalize time format (remove spaces and case-insensitive compare)
-                    norm_expected_time = expected_time.replace(' ', '').lower()
-                    norm_event_time = event['time'].replace(' ', '').lower() if event['time'] else ''
-                    time_match = norm_expected_time == norm_event_time
+        success = "true" in content_str.lower()
 
-                keyword_match = False
-                for keyword in expected_keywords:
-                    if keyword.lower() in event['description'].lower():
-                        keyword_match = True
-                        break
-
-                if date_match and time_match and keyword_match:
-                    event_found = True
-                    found_events.append(expected_event)
-
-            if not event_found:
-                reason = []
-                if expected_date and not date_match:
-                    reason.append("date not found")
-                if expected_time and not time_match:
-                    reason.append("time not found")
-                if not keyword_match:
-                    reason.append("keywords not found")
-                
-                missing_events.append({
-                    "event": expected_event,
-                    "reason": ", ".join(reason)
-                })
-
-        success = len(missing_events) == 0
-
-        log = f"Messages: {user_messages}\n"
-        log += f"Expected events: {expected_result}\n"
-        log += f"Found events: {found_events}\n"
-        log += f"Missing events: {missing_events}\n"
+        log = f"Expected: {expected_result}\n"
         log += f"Full stdout: {stdout}\n"
         if stderr:
             log += f"Stderr: {stderr}\n"
@@ -200,6 +106,7 @@ async def run_test(
 
 async def main_with_args(
     tests_file: Path,
+    model: str,
     log_file: Path,
     concurrency: int,
     num_samples: int,
@@ -215,7 +122,7 @@ async def main_with_args(
     async def run_test_with_sem(test_case, index):
         async with sem:
             success, log = await run_test(
-                test_case["user_messages"], test_case["expected_result"]
+                test_case["user_messages"], test_case["expected_result"], model
             )
             return success, log, index
 
@@ -254,21 +161,24 @@ def main():
         help="YAML file containing test cases",
     )
     parser.add_argument(
+        "--model", type=str, default="llama", help="Model to run. Default is llama", choices=["llama", "4o_mini"]
+    )
+    parser.add_argument(
         "--log", type=Path, default="test_log.txt", help="File to write test results to"
     )
     parser.add_argument(
-        "--concurrency", type=int, default=1, help="Number of tests to run concurrently"
+        "--concurrency", type=int, default=2, help="Number of tests to run concurrently"
     )
     parser.add_argument(
         "--num-samples",
         type=int,
-        default=2,
+        default=1,
         help="Number of attempts to make for each test case",
     )
     args = parser.parse_args()
 
     asyncio.run(
-        main_with_args(args.tests, args.log, args.concurrency, args.num_samples)
+        main_with_args(args.tests, args.model, args.log, args.concurrency, args.num_samples)
     )
 
 

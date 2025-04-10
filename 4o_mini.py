@@ -26,7 +26,7 @@ vector_store = Chroma(
 llm = connect_model(
     api_key=os.getenv("API_KEY"),
     base_url=os.getenv("API_BASE_URL"),
-    model="gpt-4o-mini"
+    model="gpt-4o-mini",
 )
 
 
@@ -90,9 +90,7 @@ system_message_content = (
     "Use three sentences maximum and keep the answer concise.\n\n"
 )
 
-system_msg = SystemMessage(
-    content=system_message_content
-)
+system_msg = SystemMessage(content=system_message_content)
 
 if __name__ == "__main__":
     if sys.stdin.isatty():
